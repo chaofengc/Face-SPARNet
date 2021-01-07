@@ -1,0 +1,3 @@
+[submodule "metrics/face-alignment"]
+	path = metrics/face-alignment
+	url = https://github.com/1adrianb/face-alignment.git
