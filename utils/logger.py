@@ -60,11 +60,13 @@ class Logger():
         for i in items.keys():
             self.writer.add_scalar('{}'.format(i), items[i], self.cur_iter)
 
+    def record_image(self, visual_img, tag='ckpt_image'):
+        self.writer.add_image(tag, visual_img, self.cur_iter, dataformats='HWC')
+
     def record_images(self, visuals, nrow=6, tag='ckpt_image'):
         imgs = []
-        max_len = visuals[0].shape[0] 
+        nrow = min(nrow, visuals[0].shape[0]) 
         for i in range(nrow):
-            if i >= max_len: continue
             tmp_imgs = [x[i] for x in visuals]
             imgs.append(np.hstack(tmp_imgs))
         imgs = np.vstack(imgs).astype(np.uint8)
@@ -73,9 +75,9 @@ class Logger():
     def record_text(self, tag, text):
         self.writer.add_text(tag, text) 
 
-    def printIterSummary(self, cur_iters, total_it, timer):
-        msg = '{}\nIter: {:03d}/{:03d}\t\t'.format(
-                timer.to_string(total_it - cur_iters), cur_iters, total_it)
+    def printIterSummary(self, epoch, cur_iters, total_it, timer):
+        msg = '{}\nIter: [{}]{:03d}/{:03d}\t\t'.format(
+                timer.to_string(total_it - cur_iters), epoch, cur_iters, total_it)
         for k, v in self.iter_log[-1].items():
             msg += '{}: {:.6f}\t'.format(k, v) 
         print(msg + '\n')

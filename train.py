@@ -42,7 +42,7 @@ if __name__ == '__main__':
             # =================== save model and visualize ===============
             if cur_iters % opt.print_freq == 0:
                 print('Model log directory: {}'.format(opt.expr_dir))
-                logger.printIterSummary(cur_iters, total_iters, timer)
+                logger.printIterSummary(epoch, cur_iters, total_iters, timer)
     
             if cur_iters % opt.visual_freq == 0:
                 visual_imgs = model.get_current_visuals()
@@ -55,7 +55,8 @@ if __name__ == '__main__':
 
             if cur_iters % opt.save_latest_freq == 0:
                 print('saving the latest model (epoch %d, iters %d)' % (epoch, cur_iters))
-                model.save_networks('latest')
+                info = {'resume_epoch': epoch, 'resume_iter': i+1}
+                model.save_networks('latest', info)
 
             if opt.debug: break
         if opt.debug and epoch > 5: exit() 

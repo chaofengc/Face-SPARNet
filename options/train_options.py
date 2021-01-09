@@ -22,9 +22,9 @@ class TrainOptions(BaseOptions):
         # training parameters
         parser.add_argument('--resume_epoch', type=int, default=0, help='training resume epoch')
         parser.add_argument('--resume_iter', type=int, default=0, help='training resume iter')
-        parser.add_argument('--n_epochs', type=int, default=100, help='number of epochs with the initial learning rate')
-        parser.add_argument('--n_epochs_decay', type=int, default=100, help='number of epochs to linearly decay learning rate to zero')
-        parser.add_argument('--total_epochs', type=int, default=100, help='# of epochs to train')
+        parser.add_argument('--n_epochs', type=int, default=10, help='number of epochs with the initial learning rate')
+        parser.add_argument('--n_epochs_decay', type=int, default=10, help='number of epochs to linearly decay learning rate to zero')
+        parser.add_argument('--total_epochs', type=int, default=20, help='# of epochs to train')
         parser.add_argument('--niter_decay', type=int, default=100, help='# of iter to linearly decay learning rate to zero')
         parser.add_argument('--beta1', type=float, default=0.5, help='momentum term of adam')
         parser.add_argument('--lr', type=float, default=0.0002, help='initial learning rate for adam')

@@ -4,7 +4,6 @@ from collections import OrderedDict
 from abc import ABC, abstractmethod
 from . import networks
 
-
 class BaseModel(ABC):
     """This class is an abstract base class (ABC) for models.
     To create a subclass, you need to implement the following five functions:
@@ -112,14 +111,6 @@ class BaseModel(ABC):
         """ Return image paths that are used to load current data"""
         return self.image_paths
 
-    def accumulate(self, model1, model2, decay=0.999):
-        par1 = model1.state_dict()
-        par2 = model2.state_dict()
-
-        for k in par1.keys():
-            par1[k].data = par1[k].data * decay + (1 - decay) * par2[k].data
-        model1.load_state_dict(par1)
-
     def update_learning_rate(self):
         """Update learning rates for all the networks; called at the end of every epoch"""
         for scheduler in self.schedulers:
@@ -131,9 +122,9 @@ class BaseModel(ABC):
         lr = self.optimizers[0].param_groups[0]['lr']
         print('learning rate = %.7f' % lr)
 
-    def get_lr(self,):    
-        lrs = {}          
-        for idx, p in enumerate(self.optimizers): 
+    def get_lr(self,):
+        lrs = {} 
+        for idx, p in enumerate(self.optimizers):
             lrs['LR{}'.format(idx)] = p.param_groups[0]['lr']
         return lrs
 
@@ -194,7 +185,7 @@ class BaseModel(ABC):
             epoch (int) -- current epoch; used in the file name '%s_net_%s.pth' % (epoch, name)
         """
         for name in self.load_model_names:
-            if isinstance(name, str): 
+            if isinstance(name, str):
                 load_filename = '%s_net_%s.pth' % (epoch, name)
                 load_path = os.path.join(self.save_dir, load_filename)
                 net = getattr(self, 'net' + name)
@@ -216,7 +207,7 @@ class BaseModel(ABC):
                 pretrained_dict = {k: v for k, v in state_dict.items() if k in model_dict}
                 model_dict.update(pretrained_dict)
                 net.load_state_dict(model_dict, strict=False)
-
+                
         info_path = os.path.join(self.save_dir, '%s.info' % epoch)
         if os.path.exists(info_path):
             info_dict = torch.load(info_path)
