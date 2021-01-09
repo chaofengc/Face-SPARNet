@@ -1,13 +1,7 @@
-*.py
-
-checkpoints/
 check_points/
 pretrain_models/
 results*
 test*
-local*
-data_aug_test.py
-local*.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
