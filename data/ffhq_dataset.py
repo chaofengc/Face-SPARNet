@@ -42,7 +42,7 @@ class FFHQDataset(BaseDataset):
         hr_img = Image.open(img_path).convert('RGB')
         hr_img = hr_img.resize((self.img_size, self.img_size))
         hr_img = random_gray(hr_img, p=0.3)
-        scale_size = np.random.randint(16, 128)
+        scale_size = np.random.randint(64, 128)
         lr_img = complex_imgaug(hr_img, self.img_size, scale_size)
 
         hr_tensor = self.to_tensor(hr_img)
@@ -64,7 +64,7 @@ def complex_imgaug(x, org_size, scale_size):
             ])),
             iaa.Resize(scale_size, interpolation=ia.ALL),
             iaa.Sometimes(0.2, iaa.AdditiveGaussianNoise(loc=0, scale=(0.0, 0.1*255), per_channel=0.5)),
-            iaa.Sometimes(0.7, iaa.JpegCompression(compression=(10, 35))),
+            iaa.Sometimes(0.7, iaa.JpegCompression(compression=(10, 65))),
             iaa.Resize(org_size),
         ])
     

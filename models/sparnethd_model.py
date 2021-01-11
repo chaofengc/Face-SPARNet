@@ -46,6 +46,10 @@ class SPARNetHDModel(BaseModel):
             self.optimizer_G = optim.Adam(self.netG.parameters(), lr=opt.lr/2, betas=(opt.beta1, 0.99))
             self.optimizer_D = optim.Adam(self.netD.parameters(), lr=opt.lr*2, betas=(opt.beta1, 0.99))
             self.optimizers = [self.optimizer_G, self.optimizer_D]
+
+    def load_pretrain_model(self,):
+        weight = torch.load(self.opt.pretrain_model_path)
+        self.netG.module.load_state_dict(weight)
     
     def set_input(self, input, cur_iters=None):
         self.cur_iters = cur_iters

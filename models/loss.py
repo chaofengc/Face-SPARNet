@@ -80,26 +80,26 @@ class PCPLoss(torch.nn.Module):
             ):
         super(PCPLoss, self).__init__()
 
-        self.mse = torch.nn.L1Loss()
+        self.crit = torch.nn.L1Loss()
         #  self.weights = [1.0/32, 1.0/16, 1.0/8, 1.0/4, 1.0]
         self.weights = [1, 1, 1, 1, 1]
 
     def forward(self, x_feats, y_feats):
         loss = 0
         for xf, yf, w in zip(x_feats, y_feats, self.weights): 
-            loss = loss + self.mse(xf, yf.detach()) * w
+            loss = loss + self.crit(xf, yf.detach()) * w
         return loss 
 
 
 class FMLoss(nn.Module):
     def __init__(self):
         super().__init__()
-        self.mse = torch.nn.L1Loss()
+        self.crit  = torch.nn.L1Loss()
 
     def forward(self, x_feats, y_feats):
         loss = 0
         for xf, yf in zip(x_feats, y_feats):
-            loss = loss + self.mse(xf, yf.detach()) 
+            loss = loss + self.crit(xf, yf.detach()) 
         return loss
 
 

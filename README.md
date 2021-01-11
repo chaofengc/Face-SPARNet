@@ -22,8 +22,8 @@ I have tested the codes on
 
 ### Download Pretrain Models and Dataset
 Download the pretrained models and data from the following link and put them to `./pretrain_models` and `./test_images` respectively
-- [GoogleDrive]()  
-- [BaiduNetDisk](), extract code: ` `   
+- [GoogleDrive](https://drive.google.com/drive/folders/1PZ_TP77_rs0z56WZausgK0m2oTxZsgB2?usp=sharing)  
+- [BaiduNetDisk](https://pan.baidu.com/s/1zYimaAnIgMIKBf9KANpxog), extract code: `2nax`   
 
 ### Test with Pretrained Models
 
@@ -32,7 +32,15 @@ We provide example test commands in script `test.sh` for both SPARNet and SPARNe
 - SPARNet upsample a 16x16 bicubic downsampled face image to 128x128, and there is **no need to align the LR face**.   
 - SPARNetHD enhance a low quality face image and generate high quality 512x512 outputs, and the LQ inputs **should be pre-aligned as FFHQ**.  
 - Please specify test input directory with `--dataroot` option.  
-- Please specify save path with `--save_as_dir`, otherwise the results will be saved to predefined directory `results/exp_name/test_latest`.
+- Please specify save path with `--save_as_dir`, otherwise the results will be saved to predefined directory `results/exp_name/test_latest`.  
+
+We also provide command to crop and align faces from single image, and then paste them back, the same as [PSFRGAN](https://github.com/chaofengc/PSFRGAN) 
+```
+python test_enhance_single_unalign.py --gpus 1 --model sparnethd --name SPARNetHD_V4_Attn3D \
+    --res_depth 10 --att_name spar3d --Gnorm 'in' \
+    --pretrain_model_path ./check_points/SPARNetHD_V4_Attn3D/latest_net_G.pth \
+    --test_img_path ./test_images/test_hzgg.jpg --results_dir test_hzgg_results
+```
 
 ### Train the Model
 
@@ -42,7 +50,7 @@ The commands used to train the released models are provided in script `train.sh`
 - To train SPARNet, we simply crop out faces from CelebA without pre-alignment, because for ultra low resolution face SR, it is difficult to pre-align the LR images.  
 - Please change the `--name` option for different experiments. Tensorboard records with the same name will be moved to `check_points/log_archive`, and the weight directory will only store weight history of latest experiment with the same name.  
 - `--gpus` specify number of GPUs used to train. The script will use GPUs with more available memory first. To specify the GPU index, uncomment the `export CUDA_VISIBLE_DEVICES=` 
-- SPARNetHD needs **at least 24GB memory to train with `batch_size=2`**. 
+- SPARNetHD needs **at least 25GB memory to train with `batch_size=2`**. 
 
 ## Differences with the Paper
 Since the original codes are messed up, we rewrite the codes and retrain all models. This leads to slightly different results between the released model and those reported in the paper. Besides, we also extend the 2D spatial attention to 3D attention, and release some models with 3D attention. We list all of them below
@@ -52,10 +60,10 @@ Since the original codes are messed up, we rewrite the codes and retrain all mod
 We found that extending 2D spatial attention to 3D attention improves the performance a lot. We trained a light model with half parameter number by reducing the number of FAU blocks, denoted as SPARNet-Light-Attn3D. SPARNet-Light-Attn3D shows similar performance with SPARNet. We also released the model for your reference.   
 
 | Model       | DICNet      | SPARNet (in paper) | SPARNet (Released) | SPARNet-Light-Attn3D (Released) |
-| ----------- | ----------- | -----------        | -----------        | -----------          |
-| #Params(M)  | 22.8        | 9.86               | 10.52              | 5.24                 |
-| PSNR        | 26.73       | 26.97              | **27.26**          | 27.21                |
-| SSIM        | 0.7955      | 0.8026             | **0.8174**         | 0.8142               |
+| ----------- | ----------- | -----------        | -----------        | -----------                     |
+| #Params(M)  | 22.8        | 9.86               | 10.52              | 5.24                            |
+| PSNR        | 26.73       | 26.97              | **27.43**          | 27.39                           |
+| SSIM        | 0.7955      | 0.8026             | **0.8201**         | 0.8189                          |
 
 *All models are trained with CelebA and tested on Helen test set provided by [DICNet](https://github.com/Maclory/Deep-Iterative-Collaboration)*
 
