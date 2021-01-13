@@ -33,6 +33,7 @@ class SPARNetModel(BaseModel):
             self.optimizers = [self.optimizer_G]
 
     def load_pretrain_model(self,):
+        print('Loading pretrained model', self.opt.pretrain_model_path)
         weight = torch.load(self.opt.pretrain_model_path)
         self.netG.module.load_state_dict(weight)
     

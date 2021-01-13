@@ -93,6 +93,14 @@ class BaseModel(ABC):
                 net = getattr(self, 'net' + name)
                 net.eval()
 
+    def accumulate(self, model1, model2, decay=0.999):
+        par1 = model1.state_dict()
+        par2 = model2.state_dict()
+
+        for k in par1.keys():
+            par1[k].data = par1[k].data * decay + (1 - decay) * par2[k].data
+        model1.load_state_dict(par1)
+
     def test(self):
         """Forward function used in test time.
 

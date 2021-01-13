@@ -28,6 +28,8 @@ class TrainOptions(BaseOptions):
         parser.add_argument('--niter_decay', type=int, default=100, help='# of iter to linearly decay learning rate to zero')
         parser.add_argument('--beta1', type=float, default=0.5, help='momentum term of adam')
         parser.add_argument('--lr', type=float, default=0.0002, help='initial learning rate for adam')
+        parser.add_argument('--g_lr', type=float, default=0.0001, help='initial learning rate for adam')
+        parser.add_argument('--d_lr', type=float, default=0.0004, help='initial learning rate for adam')
         parser.add_argument('--gan_mode', type=str, default='hinge', help='the type of GAN objective. [vanilla| lsgan | hinge]. vanilla GAN loss is the cross-entropy objective used in the original GAN paper.')
         parser.add_argument('--lr_policy', type=str, default='linear', help='learning rate policy. [linear | step | plateau | cosine]')
         parser.add_argument('--lr_decay_iters', type=int, default=50, help='multiply by a gamma every lr_decay_iters iterations')

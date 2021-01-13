@@ -67,6 +67,8 @@ We found that extending 2D spatial attention to 3D attention improves the perfor
 
 *All models are trained with CelebA and tested on Helen test set provided by [DICNet](https://github.com/Maclory/Deep-Iterative-Collaboration)*
 
+![example result](example_ultra_facesrx8.png)
+
 ### SPARNetHD
 
 ## Citation

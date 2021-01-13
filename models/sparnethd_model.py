@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import copy
 
 from models import loss 
 from models import networks
@@ -25,13 +26,15 @@ class SPARNetHDModel(BaseModel):
                             res_depth=opt.res_depth, norm_type=opt.Gnorm, att_name=opt.att_name, bottleneck_size=opt.bottleneck_size) 
         self.netG = networks.define_network(opt, self.netG, use_norm='spectral_norm')
 
-        self.model_names = ['G', 'D']
-        self.load_model_names = ['G']
+        self.netH = copy.deepcopy(self.netG)
+
+        self.model_names = ['G', 'D', 'H']
+        self.load_model_names = ['G', 'H']
         self.loss_names = ['Pix', 'PCP', 'G', 'FM', 'D'] # Generator loss, fm loss, parsing loss, discriminator loss
         self.visual_names = ['img_LR', 'img_SR', 'img_HR']
 
         if self.isTrain:
-            self.load_model_names = ['G', 'D']
+            self.load_model_names = ['G', 'D', 'H']
 
             self.netD = networks.MultiScaleDiscriminator(3, n_layers=opt.n_layers_D, norm_type=opt.Dnorm, num_D=opt.num_D)
             self.netD = networks.define_network(opt, self.netD, use_norm='spectral_norm') 
@@ -43,11 +46,12 @@ class SPARNetHDModel(BaseModel):
             self.criterionPCP = loss.PCPLoss(opt)
             self.criterionL1 = nn.L1Loss()
 
-            self.optimizer_G = optim.Adam(self.netG.parameters(), lr=opt.lr/2, betas=(opt.beta1, 0.99))
-            self.optimizer_D = optim.Adam(self.netD.parameters(), lr=opt.lr*2, betas=(opt.beta1, 0.99))
+            self.optimizer_G = optim.Adam(self.netG.parameters(), lr=opt.g_lr, betas=(opt.beta1, 0.99))
+            self.optimizer_D = optim.Adam(self.netD.parameters(), lr=opt.d_lr, betas=(opt.beta1, 0.99))
             self.optimizers = [self.optimizer_G, self.optimizer_D]
 
     def load_pretrain_model(self,):
+        print('Loading pretrained model', self.opt.pretrain_model_path)
         weight = torch.load(self.opt.pretrain_model_path)
         self.netG.module.load_state_dict(weight)
     
@@ -65,6 +69,10 @@ class SPARNetHDModel(BaseModel):
 
         self.fake_vgg_feat = self.vgg19(self.img_SR)
         self.real_vgg_feat = self.vgg19(self.img_HR)
+
+        with torch.no_grad():
+            self.accumulate(self.netH, self.netG)
+            self.ema_img_SR = self.netH(self.img_LR)
 
     def backward_G(self):
         # Pix loss
@@ -110,6 +118,7 @@ class SPARNetHDModel(BaseModel):
         out = []
         out.append(utils.tensor_to_numpy(self.img_LR))
         out.append(utils.tensor_to_numpy(self.img_SR))
+        out.append(utils.tensor_to_numpy(self.ema_img_SR))
         out.append(utils.tensor_to_numpy(self.img_HR))
         visual_imgs = [utils.batch_numpy_to_image(x, size) for x in out]
         
