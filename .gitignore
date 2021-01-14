@@ -3,6 +3,7 @@ pretrain_models/
 results*
 test*
 !test_images/
+!test.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

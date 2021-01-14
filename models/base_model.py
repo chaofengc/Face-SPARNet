@@ -169,6 +169,11 @@ class BaseModel(ABC):
                     net.cuda(self.gpu_ids[0])
                 else:
                     torch.save(net.cpu().state_dict(), save_path)
+        opts = []
+        for opt in self.optimizers:
+            opts.append(opt.state_dict())
+        torch.save(opts, os.path.join(self.save_dir, '%s_opts.pth' % epoch))
+
         if info is not None:
             torch.save(info, os.path.join(self.save_dir, '%s.info' % epoch))
 
@@ -192,6 +197,12 @@ class BaseModel(ABC):
         Parameters:
             epoch (int) -- current epoch; used in the file name '%s_net_%s.pth' % (epoch, name)
         """
+        # Load optimizers
+        saved_opts = torch.load(os.path.join(self.save_dir, '%s_opts.pth' % epoch))
+        for sopt, opt in zip(saved_opts, self.optimizers):
+            opt.load_state_dict(sopt)
+
+        # Load model weights 
         for name in self.load_model_names:
             if isinstance(name, str):
                 load_filename = '%s_net_%s.pth' % (epoch, name)
@@ -215,7 +226,7 @@ class BaseModel(ABC):
                 pretrained_dict = {k: v for k, v in state_dict.items() if k in model_dict}
                 model_dict.update(pretrained_dict)
                 net.load_state_dict(model_dict, strict=False)
-                
+
         info_path = os.path.join(self.save_dir, '%s.info' % epoch)
         if os.path.exists(info_path):
             info_dict = torch.load(info_path)

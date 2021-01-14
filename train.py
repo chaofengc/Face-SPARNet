@@ -48,14 +48,14 @@ if __name__ == '__main__':
                 visual_imgs = model.get_current_visuals()
                 logger.record_images(visual_imgs)
 
+            info = {'resume_epoch': epoch, 'resume_iter': i+1}
             if cur_iters % opt.save_iter_freq == 0:
                 print('saving current model (epoch %d, iters %d)' % (epoch, cur_iters))
                 save_suffix = 'iter_%d' % cur_iters 
-                model.save_networks(save_suffix)
+                model.save_networks(save_suffix, info)
 
             if cur_iters % opt.save_latest_freq == 0:
                 print('saving the latest model (epoch %d, iters %d)' % (epoch, cur_iters))
-                info = {'resume_epoch': epoch, 'resume_iter': i+1}
                 model.save_networks('latest', info)
 
             if opt.debug: break
