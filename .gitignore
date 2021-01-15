@@ -1,9 +1,8 @@
 check_points/
 pretrain_models/
 results*
-test*
-!test_images/
-!test.sh
+test_dirs/
+test_hzgg_results/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
