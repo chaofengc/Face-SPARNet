@@ -36,9 +36,9 @@ We provide example test commands in script `test.sh` for both SPARNet and SPARNe
 
 We also provide command to crop and align faces from single image, and then paste them back, the same as [PSFRGAN](https://github.com/chaofengc/PSFRGAN) 
 ```
-python test_enhance_single_unalign.py --gpus 1 --model sparnethd --name SPARNetHD_V4_Attn3D \
-    --res_depth 10 --att_name spar3d --Gnorm 'in' \
-    --pretrain_model_path ./check_points/SPARNetHD_V4_Attn3D/latest_net_G.pth \
+python test_enhance_single_unalign.py --gpus 1 --model sparnethd --name SPARNetHD_V4_Attn2D \
+    --res_depth 10 --att_name spar --Gnorm 'in' \
+    --pretrain_model_path ./check_points/SPARNetHD_V4_Attn2D/latest_net_H.pth \
     --test_img_path ./test_images/test_hzgg.jpg --results_dir test_hzgg_results
 ```
 
@@ -59,17 +59,26 @@ Since the original codes are messed up, we rewrite the codes and retrain all mod
 
 We found that extending 2D spatial attention to 3D attention improves the performance a lot. We trained a light model with half parameter number by reducing the number of FAU blocks, denoted as SPARNet-Light-Attn3D. SPARNet-Light-Attn3D shows similar performance with SPARNet. We also released the model for your reference.   
 
-| Model       | DICNet      | SPARNet (in paper) | SPARNet (Released) | SPARNet-Light-Attn3D (Released) |
-| ----------- | ----------- | -----------        | -----------        | -----------                     |
-| #Params(M)  | 22.8        | 9.86               | 10.52              | 5.24                            |
-| PSNR        | 26.73       | 26.97              | **27.43**          | 27.39                           |
-| SSIM        | 0.7955      | 0.8026             | **0.8201**         | 0.8189                          |
+| Model          | DICNet      | SPARNet (in paper) | SPARNet (Released) | SPARNet-Light-Attn3D (Released) |
+| -----------    | ----------- | -----------        | -----------        | -----------                     |
+| #Params(M)     | 22.8        | 9.86               | 10.52              | 5.24                            |
+| PSNR (&#8593;) | 26.73       | 26.97              | **27.43**          | 27.39                           |
+| SSIM (&#8593;) | 0.7955      | 0.8026             | **0.8201**         | 0.8189                          |
 
 *All models are trained with CelebA and tested on Helen test set provided by [DICNet](https://github.com/Maclory/Deep-Iterative-Collaboration)*
 
 ![example result](example_ultra_facesrx8.png)
 
 ### SPARNetHD
+
+We also provide network with 2D and 3D attention for SPARNetHD. For the test dataset, we clean up non-face images, add some extra test images from internet, and obtain a new CelebA-TestN dataset with 1117 images. We test the retrained model on the new dataset and recalculate the FID scores.
+
+Similar as StyleGAN, we use the exponential moving average weight as the final model, which shows slightly better results.
+
+| Model         | SPARNetHD (in paper) | SPARNetHD-Attn2D (Released) | SPARNetHD-Attn3D (Released) |
+| -----------   | -----------          | -----------                 | -----------                 |
+| FID (&#8595;) | 27.16                | **26.72**                   | 28.42                       |
+
 
 ## Citation
 ```

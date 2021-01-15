@@ -42,7 +42,8 @@ if __name__ == '__main__':
             # =================== save model and visualize ===============
             if cur_iters % opt.print_freq == 0:
                 print('Model log directory: {}'.format(opt.expr_dir))
-                logger.printIterSummary(epoch, cur_iters, total_iters, timer)
+                epoch_progress = '{:03d}|{:05d}/{:05d}'.format(epoch, i, single_epoch_iters)
+                logger.printIterSummary(epoch_progress, cur_iters, total_iters, timer)
     
             if cur_iters % opt.visual_freq == 0:
                 visual_imgs = model.get_current_visuals()

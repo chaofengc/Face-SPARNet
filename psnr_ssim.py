@@ -67,7 +67,7 @@ def psnr_ssim_dir(gt_dir, test_dir):
 
 if __name__ == '__main__':
 
-    gt_dir = '../Helen_test_DIC/HR'
+    gt_dir = 'test_dirs/Helen_test_DIC/HR'
     test_dirs = [
             './results_helen/SPARNet_S16_V4_Attn2D',
             './results_helen/SPARNetLight_Attn3D',

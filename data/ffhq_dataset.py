@@ -42,7 +42,7 @@ class FFHQDataset(BaseDataset):
         hr_img = Image.open(img_path).convert('RGB')
         hr_img = hr_img.resize((self.img_size, self.img_size))
         hr_img = random_gray(hr_img, p=0.3)
-        scale_size = np.random.randint(64, 128)
+        scale_size = np.random.randint(32, 128)
         lr_img = complex_imgaug(hr_img, self.img_size, scale_size)
 
         hr_tensor = self.to_tensor(hr_img)
