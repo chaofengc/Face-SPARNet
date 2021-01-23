@@ -78,7 +78,7 @@ class SPARNetHDModel(BaseModel):
         # Pix loss
         self.loss_Pix = self.criterionL1(self.img_SR, self.img_HR) * self.opt.lambda_pix
         # perceptual loss
-        self.loss_PCP = self.criterionPCP(self.img_SR, self.img_HR) * self.opt.lambda_pcp 
+        self.loss_PCP = self.criterionPCP(self.fake_vgg_feat, self.real_vgg_feat) * self.opt.lambda_pcp 
 
         # Feature matching loss
         tmp_loss =  0
