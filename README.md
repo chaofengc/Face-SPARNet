@@ -9,8 +9,8 @@
 
 Clone this repository
 ```
-git clone https://github.com/chaofengc/PSFR-GAN.git
-cd PSFR-GAN
+git clone https://github.com/chaofengc/Face-SPARNet.git
+cd Face-SPARNet
 ```
 
 I have tested the codes on
