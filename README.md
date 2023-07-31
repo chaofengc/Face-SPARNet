@@ -22,7 +22,7 @@ I have tested the codes on
 
 ### Download Pretrain Models and Dataset
 Download the pretrained models and data from the following link and put them to `./pretrain_models` and `./test_dirs` respectively
-- [GoogleDrive](https://drive.google.com/drive/folders/1PZ_TP77_rs0z56WZausgK0m2oTxZsgB2?usp=sharing)  
+- [Github](https://github.com/chaofengc/Face-SPARNet/releases/tag/v0.1.0)  
 - [BaiduNetDisk](https://pan.baidu.com/s/1zYimaAnIgMIKBf9KANpxog), extract code: `2nax`   
 
 ### Test with Pretrained Models
