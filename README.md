@@ -38,7 +38,7 @@ We also provide command to crop and align faces from single image, and then past
 ```
 python test_enhance_single_unalign.py --gpus 1 --model sparnethd --name SPARNetHD_V4_Attn2D \
     --res_depth 10 --att_name spar --Gnorm 'in' \
-    --pretrain_model_path ./check_points/SPARNetHD_V4_Attn2D/latest_net_H.pth \
+    --pretrain_model_path [./path/to/model/SPARNetHD_V4_Attn2D_net_H-epoch10.pth] \
     --test_img_path ./test_images/test_hzgg.jpg --results_dir test_hzgg_results
 ```
 
