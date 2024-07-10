@@ -83,7 +83,7 @@ Similar as StyleGAN, we use the exponential moving average weight as the final m
 ## Citation
 ```
 @InProceedings{ChenSPARNet,
-    author = {Chen, Chaofeng and Gong, Dihong and Wang, Hao and Li, Zhifeng and Wong, Kwan-Yee~K},
+    author = {Chen, Chaofeng and Gong, Dihong and Wang, Hao and Li, Zhifeng and Wong, Kwan-Yee~K.},
     title = {Learning Spatial Attention for Face Super-Resolution},
     Journal = {IEEE Transactions on Image Processing (TIP)},
     year = {2020}
